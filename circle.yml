@@ -1,12 +1,7 @@
 # Java-related client, server tests
 machine:
   java:
-    version: openjdk8
-  services:
-    - docker
-  # Override /etc/hosts
-  hosts:
-    petstore.swagger.io: 127.0.0.1
+    version: openjdk6
   environment:
     DOCKER_GENERATOR_IMAGE_NAME: swaggerapi/swagger-generator
     DOCKER_CODEGEN_CLI_IMAGE_NAME: swaggerapi/swagger-codegen-cli
@@ -16,25 +11,11 @@ dependencies:
     - "~/.m2"
     - "~/.sbt"
 
-  pre:
-    - sudo add-apt-repository ppa:duggan/bats --yes
-    - sudo apt-get update -qq
-    - sudo apt-get install -qq bats
-    - sudo apt-get install -qq curl
-    # to run petstore server locally via docker
-    - docker pull swaggerapi/petstore
-    - docker run -d -e SWAGGER_HOST=http://petstore.swagger.io -e SWAGGER_BASE_PATH=/v2 -p 80:8080 swaggerapi/petstore
-    - docker ps -a
-    # show host table to confirm petstore.swagger.io is mapped to localhost
-    - cat /etc/hosts
-  override:
-    - cp pom.xml.circleci pom.xml
-
 test:
   override:
     ## test with jdk8
-    - sudo ls -l /usr/lib/jvm/
-    - sudo update-java-alternatives -s java-1.6.0-openjdk-amd64
+    #- sudo ls -l /usr/lib/jvm/
+    #- sudo update-java-alternatives -s java-1.6.0-openjdk-amd64
     - java -version
     - cd samples/client/petstore/java/jersey2-java6/ && mvn test
       #    - java -version
