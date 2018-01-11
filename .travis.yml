@@ -11,6 +11,8 @@ before_install:
   # show java version
   - java -version
 
+install: true
+
 script:
   - cd samples/client/petstore/java/jersey2-java6/ && mvn test
 
